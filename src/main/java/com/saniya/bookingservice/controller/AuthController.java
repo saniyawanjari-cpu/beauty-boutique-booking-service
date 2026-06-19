@@ -1,5 +1,6 @@
 package com.saniya.bookingservice.controller;
-
+import com.saniya.bookingservice.dto.LoginRequest;
+import java.util.Optional;
 import com.saniya.bookingservice.dto.RegisterRequest;
 import com.saniya.bookingservice.entity.User;
 import com.saniya.bookingservice.repository.UserRepository;
@@ -21,9 +22,34 @@ public class AuthController {
     JwtService jwtService;
 
     @PostMapping("/login")
-    public String login() {
+    public String login(
+            @RequestBody LoginRequest request
+    ) {
 
-        return jwtService.generateToken("saniya");
+        Optional<User> userOptional =
+                userRepository.findByUsername(
+                        request.getUsername()
+                );
+
+        if(userOptional.isEmpty()) {
+            return "User Not Found";
+        }
+
+        User user = userOptional.get();
+
+        boolean passwordMatches =
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword()
+                );
+
+        if(!passwordMatches) {
+            return "Invalid Password";
+        }
+
+        return jwtService.generateToken(
+                user.getUsername()
+        );
     }
     @PostMapping("/register")
     public String register(
