@@ -1,13 +1,13 @@
 package com.saniya.bookingservice.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     private String customerName;
@@ -15,6 +15,10 @@ public class Customer {
     private String service;
 
     private double amount;
+
+    private LocalDate appointmentDate;
+
+    private String appointmentSlot;
 
     public Long getId() {
         return id;
@@ -46,5 +50,21 @@ public class Customer {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getAppointmentSlot() {
+        return appointmentSlot;
+    }
+
+    public void setAppointmentSlot(String appointmentSlot) {
+        this.appointmentSlot = appointmentSlot;
     }
 }

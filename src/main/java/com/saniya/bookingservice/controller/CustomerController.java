@@ -26,13 +26,23 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer saveBooking(
+    public Object saveBooking(
             @RequestBody Customer customer
     ) {
 
+        boolean slotExists =
+                repo.existsByAppointmentDateAndAppointmentSlot(
+                        customer.getAppointmentDate(),
+                        customer.getAppointmentSlot()
+                );
+
+        if (slotExists) {
+
+            return "Slot already booked";
+        }
+
         return repo.save(customer);
     }
-
     @GetMapping("/pay")
     public String pay() {
 
